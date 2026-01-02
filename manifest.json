@@ -3,7 +3,7 @@
 	"name": "Journalit",
 	"version": "1.6.1-beta.1",
 	"minAppVersion": "0.15.0",
-	"description": "Local-first journaling plugin for traders with markdown support. (Closed source)",
+	"description": "本地优先的交易日志插件，支持 Markdown，专为交易者设计。（闭源）",
 	"author": "Cursivez",
 	"authorUrl": "https://github.com/Cursivez",
 	"fundingUrl": "https://github.com/sponsors/Cursivez",

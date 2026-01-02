@@ -1,261 +1,261 @@
-# Privacy Policy - Journalit
+# 隐私政策 - Journalit
 
-**Last Updated**: 2025-11-30
+**最后更新**：2025-11-30
 
-## Overview
+## 概述
 
-Journalit is designed with privacy as a core principle. Your trading data stays in your Obsidian vault, and network features are entirely optional.
-
----
-
-## Data Storage & Privacy
-
-### Local-First Architecture
-
-The core functionality of Journalit operates **entirely locally** within your Obsidian vault:
-
-- **Trade Notes**: All manually created trade entries are stored only in your vault
-- **Daily/Weekly/Monthly Reviews**: Review notes remain local
-- **Account Data**: Account configurations stored in plugin settings
-- **Custom Fields & Settings**: All customization data stays local
-- **Analytics & Charts**: Calculated locally from your vault data
-
-**No manual trade data is ever transmitted to any server.**
+Journalit 以隐私为核心原则进行设计。您的交易数据保留在您的 Obsidian 库中，网络功能完全可选。
 
 ---
 
-## Local Data Storage
+## 数据存储与隐私
 
-### Plugin Settings
-**Location**: `.obsidian/plugins/journalit/data.json`
+### 本地优先架构
 
-Contains your preferences: currency, display name, date formats, custom fields, dashboard layout, and sync mappings. Never transmitted to any server.
+Journalit 的核心功能在您的 Obsidian 库内**完全本地**运行：
 
-### Authentication Data (If Authenticated)
-**Location**: `.obsidian/plugins/journalit/auth.json` (encrypted)
+- **交易笔记**：所有手动创建的交易记录仅存储在您的库中
+- **每日/每周/每月审查**：审查笔记保持本地
+- **账户数据**：账户配置存储在插件设置中
+- **自定义字段和设置**：所有自定义数据保持本地
+- **分析和图表**：从您的库数据本地计算
 
-When you authenticate, the following is stored locally:
-- JWT access token (encrypted with AES-256-GCM)
-- User ID and email
-- Subscription tier
-
-**Security**: Tokens are encrypted with device-specific keys derived from your vault path and device information. Keys are non-transferable between devices.
-
-### Cache Data
-**Location**: `.journalit/cache/`
-
-Query results and indexes for performance optimization. Stays local, never transmitted.
+**不会将任何手动交易数据传输到任何服务器。**
 
 ---
 
-## Optional Network Features
+## 本地数据存储
 
-Journalit includes optional features that require network connectivity. Backend synchronization is **disabled by default** and requires explicit authentication.
+### 插件设置
+**位置**：`.obsidian/plugins/journalit/data.json`
 
-### Authentication (Required for Sync Features)
+包含您的偏好设置：货币、显示名称、日期格式、自定义字段、仪表板布局和同步映射。从不传输到任何服务器。
 
-When you choose to authenticate:
+### 认证数据（如果已认证）
+**位置**：`.obsidian/plugins/journalit/auth.json`（加密）
 
-**What is Transmitted:**
-- Your email address (to receive a 6-digit verification code)
-- The verification code you enter (to complete authentication)
+当您认证时，以下内容在本地存储：
+- JWT 访问令牌（使用 AES-256-GCM 加密）
+- 用户 ID 和电子邮件
+- 订阅层级
 
-**What is Returned:**
-- JWT token (42-day expiry for beta users)
-- User ID and subscription status
+**安全性**：令牌使用从您的库路径和设备信息派生的设备特定密钥进行加密。密钥在设备之间不可转移。
 
-**What is NOT Transmitted:**
-- Device fingerprints or hardware identifiers
-- Passwords (we use passwordless email verification)
+### 缓存数据
+**位置**：`.journalit/cache/`
 
----
-
-### MetaTrader 5 Sync (Optional)
-
-When you enable MT5 sync in **Settings → Integration → Backend Integration**, the plugin:
-
-**What is Transmitted:**
-- **Only automatically synced trades** from your MetaTrader account
-- Trade data: symbol, entry/exit times, prices, position size, P&L, commission, swap, fees
-- Account information: MT5 account ID, display name
-- Vault identifier: A SHA-256 hashed, non-reversible identifier for sync coordination
-
-**What is NOT Transmitted:**
-- Manual trades you create in Obsidian
-- Trade notes or analysis you write
-- Screenshots or attachments
-- File contents or vault structure
-
-**Infrastructure:**
-- Backend Server (HTTPS encrypted)
-- FTP Server (for MetaTrader report uploads)
-
-**Control:**
-- Requires explicit authentication via email verification
-- Enable/disable in **Settings → Integration → Backend Integration**
+查询结果和索引用于性能优化。保持本地，从不传输。
 
 ---
 
-### CSV Import with AI Mapping (Optional)
+## 可选网络功能
 
-When importing CSV files, you may optionally use AI-assisted column mapping:
+Journalit 包括需要网络连接的可选功能。后端同步**默认禁用**，需要显式认证。
 
-**What is Transmitted:**
-- CSV column headers (e.g., "Date", "Symbol", "P/L")
-- First 3-5 sample rows of your CSV
+### 认证（同步功能所需）
 
-**What is NOT Transmitted:**
-- Full CSV file contents
-- Complete trade history
+当您选择认证时：
 
-**Control:**
-- This is opt-in per import - you can always map columns manually instead
+**传输的内容：**
+- 您的电子邮件地址（用于接收 6 位验证码）
+- 您输入的验证码（以完成认证）
 
----
+**返回的内容：**
+- JWT 令牌（Beta 用户 42 天过期）
+- 用户 ID 和订阅状态
 
-## Network Endpoints
-
-When backend integration is enabled, the plugin communicates with the following endpoints:
-
-**Authentication:**
-- `/auth/login` - Request email verification code
-- `/auth/verify` - Verify code and receive token
-- `/auth/validate` - Validate existing token
-
-**Sync Operations:**
-- `/api/v1/obsidian/register-vault` - Initial vault registration
-- `/api/v1/sync/ftp` - Trigger FTP synchronization
-- `/api/v1/trades` - Fetch trade data from backend
-- `/api/v1/mt-accounts` - MetaTrader account management
-- `/api/v1/obsidian/status` - Check synchronization status
-- `/api/v1/ftp-users` - FTP credential management
-- `/api/v1/csv/ai-analyze` - AI column mapping (optional)
-- `/api/v1/health` - Backend health check
-
-All authenticated API requests use JWT tokens in the Authorization header.
+**不传输的内容：**
+- 设备指纹或硬件标识符
+- 密码（我们使用无密码电子邮件验证）
 
 ---
 
-## Server-Side Data Storage
+### MetaTrader 5 同步（可选）
 
-When you use sync features, the backend stores:
+当您在 **设置 → 集成 → 后端集成**中启用 MT5 同步时，插件：
 
-### User Data
-- Email address
-- Username (derived from email)
-- Subscription tier and status
-- Account creation timestamp
+**传输的内容：**
+- **仅来自您的 MetaTrader 账户的自动同步交易**
+- 交易数据：代码、进出场时间、价格、仓位大小、盈亏、佣金、掉期、费用
+- 账户信息：MT5 账户 ID、显示名称
+- 库标识符：用于同步协调的 SHA-256 哈希、不可逆标识符
 
-### Trading Data
-- Synced trades from MetaTrader (symbol, times, prices, P&L, fees)
-- MT account IDs and display names
-- Processing history (which reports have been synced)
+**不传输的内容：**
+- 您在 Obsidian 中手动创建的交易
+- 您编写的交易笔记或分析
+- 截图或附件
+- 文件内容或库结构
 
-### Security Logs
-- FTP login attempts (IP address, timestamp, success/failure)
-- Used for security monitoring and abuse prevention
+**基础设施：**
+- 后端服务器（HTTPS 加密）
+- FTP 服务器（用于 MetaTrader 报告上传）
 
-### Data Isolation
-All user data is protected by PostgreSQL Row-Level Security (RLS). Each user can only access their own data.
-
----
-
-## Data Security
-
-### Encryption & Transport
-- All network communications use **HTTPS (TLS 1.2+)**
-- Authentication tokens encrypted locally with AES-256-GCM
-- FTP credentials stored in Obsidian's encrypted data storage
-- Vault identifier is hashed using SHA-256 (non-reversible)
-
-### Password Security
-- FTP credentials: bcrypt hashed on server
-- No plaintext passwords stored
+**控制：**
+- 需要通过电子邮件验证显式认证
+- 在 **设置 → 集成 → 后端集成**中启用/禁用
 
 ---
 
-## Data Retention
+### CSV 导入与 AI 映射（可选）
 
-### Local Data
-- Stored indefinitely until you delete files or uninstall the plugin
-- You have full control over local data
+导入 CSV 文件时，您可以选择使用 AI 辅助列映射：
 
-### Server Data
-- **Synced trades**: Stored for sync functionality until account deletion
-- **Account data**: Stored until account deletion
-- **FTP access logs**: Retained for security purposes, older entries periodically cleaned
-- **Authentication codes**: Expired codes deleted within 24 hours
+**传输的内容：**
+- CSV 列标题（例如"日期"、"代码"、"盈亏"）
+- 您 CSV 的前 3-5 个示例行
 
----
+**不传输的内容：**
+- 完整 CSV 文件内容
+- 完整交易历史
 
-## Third-Party Services
-
-### Email Delivery
-Verification codes are sent via email service provider:
-- Only your email address and verification code
-- Used solely for authentication
-
-### No Analytics or Tracking
-- No Google Analytics
-- No user behavior tracking
-- No advertising networks
-- No data sold to third parties
+**控制：**
+- 这是每次导入的可选功能 - 您可以始终手动映射列
 
 ---
 
-## Your Rights & Control
+## 网络端点
 
-### Data Access
-- All your data is accessible in your Obsidian vault
-- Backend synced data available via sync status in settings
+启用后端集成时，插件与以下端点通信：
 
-### Data Deletion
-- **Local Data**: Delete by removing the plugin or deleting files
-- **Backend Data**: Contact contact@journalit.co to request complete account deletion
+**认证：**
+- `/auth/login` - 请求电子邮件验证码
+- `/auth/verify` - 验证代码并接收令牌
+- `/auth/validate` - 验证现有令牌
 
-### Data Export
-- Local data: Already in your vault as markdown files
-- Backend data: Contact contact@journalit.co for data export
+**同步操作：**
+- `/api/v1/obsidian/register-vault` - 初始库注册
+- `/api/v1/sync/ftp` - 触发 FTP 同步
+- `/api/v1/trades` - 从后端获取交易数据
+- `/api/v1/mt-accounts` - MetaTrader 账户管理
+- `/api/v1/obsidian/status` - 检查同步状态
+- `/api/v1/ftp-users` - FTP 凭证管理
+- `/api/v1/csv/ai-analyze` - AI 列映射（可选）
+- `/api/v1/health` - 后端健康检查
 
-### Opt-Out
-- MT5 Sync: Disable in **Settings → Backend Integration**
-- Authentication: Log out to revoke token access
-- You can use the plugin 100% offline with no network features
-
----
-
-## What We Do NOT Collect
-
-- Browsing history or clickstream data
-- Device identifiers or fingerprints (beyond what's used for local encryption)
-- Location data
-- Trading account passwords or API keys
-- Contents of your Obsidian vault
-- Your manual trades or personal notes
-- Usage analytics or telemetry
+所有经过认证的 API 请求在授权标头中使用 JWT 令牌。
 
 ---
 
-## Changes to This Policy
+## 服务器端数据存储
 
-We will notify users of material changes to this privacy policy through:
-- Plugin update notes
-- Discord community announcements
-- GitHub release notes
+当您使用同步功能时，后端存储：
+
+### 用户数据
+- 电子邮件地址
+- 用户名（从电子邮件派生）
+- 订阅层级和状态
+- 账户创建时间戳
+
+### 交易数据
+- 来自 MetaTrader 的同步交易（代码、时间、价格、盈亏、费用）
+- MT 账户 ID 和显示名称
+- 处理历史（哪些报告已同步）
+
+### 安全日志
+- FTP 登录尝试（IP 地址、时间戳、成功/失败）
+- 用于安全监控和滥用预防
+
+### 数据隔离
+所有用户数据都受到 PostgreSQL 行级安全性（RLS）保护。每个用户只能访问自己的数据。
 
 ---
 
-## Contact
+## 数据安全
 
-Privacy questions or concerns:
-- Email: contact@journalit.co
-- Discord: [Join our server](https://discord.gg/AkSw3D9h8b)
+### 加密和传输
+- 所有网络通信使用 **HTTPS (TLS 1.2+)**
+- 认证令牌使用 AES-256-GCM 本地加密
+- FTP 凭证存储在 Obsidian 的加密数据存储中
+- 库标识符使用 SHA-256 哈希（不可逆）
+
+### 密码安全
+- FTP 凭证：在服务器上使用 bcrypt 哈希
+- 不存储明文密码
 
 ---
 
-## Compliance
+## 数据保留
 
-This plugin adheres to:
-- Obsidian Developer Policies
-- Obsidian Plugin Guidelines
-- GDPR principles (data minimization, purpose limitation, transparency)
+### 本地数据
+- 无限期存储，直到您删除文件或卸载插件
+- 您对本地数据拥有完全控制权
+
+### 服务器数据
+- **同步交易**：存储用于同步功能，直到账户删除
+- **账户数据**：存储直到账户删除
+- **FTP 访问日志**：出于安全目的保留，旧条目定期清理
+- **认证代码**：过期代码在 24 小时内删除
+
+---
+
+## 第三方服务
+
+### 电子邮件传递
+验证码通过电子邮件服务提供商发送：
+- 仅您的电子邮件地址和验证码
+- 仅用于认证
+
+### 无分析或跟踪
+- 无 Google Analytics
+- 无用户行为跟踪
+- 无广告网络
+- 无数据出售给第三方
+
+---
+
+## 您的权利和控制
+
+### 数据访问
+- 您的所有数据都可以在您的 Obsidian 库中访问
+- 后端同步数据可通过设置中的同步状态访问
+
+### 数据删除
+- **本地数据**：通过删除插件或删除文件来删除
+- **后端数据**：联系 contact@journalit.co 请求完全账户删除
+
+### 数据导出
+- 本地数据：作为 markdown 文件已在您的库中
+- 后端数据：联系 contact@journalit.co 进行数据导出
+
+### 退出
+- MT5 同步：在 **设置 → 后端集成**中禁用
+- 认证：注销以撤销令牌访问
+- 您可以 100% 离线使用插件，无需网络功能
+
+---
+
+## 我们不收集的内容
+
+- 浏览历史或点击流数据
+- 设备标识符或指纹（超出用于本地加密的范围）
+- 位置数据
+- 交易账户密码或 API 密钥
+- 您的 Obsidian 库内容
+- 您的手动交易或个人笔记
+- 使用分析或遥测
+
+---
+
+## 本政策的变更
+
+我们将通过以下方式通知用户本隐私政策的重大变更：
+- 插件更新说明
+- Discord 社区公告
+- GitHub 发布说明
+
+---
+
+## 联系方式
+
+隐私问题或疑虑：
+- 电子邮件：contact@journalit.co
+- Discord：[加入我们的服务器](https://discord.gg/AkSw3D9h8b)
+
+---
+
+## 合规性
+
+本插件遵守：
+- Obsidian 开发者政策
+- Obsidian 插件指南
+- GDPR 原则（数据最小化、目的限制、透明度）
